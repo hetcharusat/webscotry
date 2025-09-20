@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Chat</title>
+</head>
+<body>
+<h2>WebSocket Chat</h2>
+<input id="msg" placeholder="Type a message" />
+<button onclick="sendMsg()">Send</button>
+<div id="chat" style="margin-top:20px;"></div>
+
+<script>
+const ws = new WebSocket('ws://localhost:8080');
+const chat = document.getElementById('chat');
+
+// Receive messages from server
+ws.onmessage = event => {
+    const p = document.createElement('p');
+    p.textContent = event.data;
+    chat.appendChild(p);
+};
+
+// Send messages to server
+function sendMsg() {
+    const input = document.getElementById('msg');
+    ws.send(input.value);
+    const p = document.createElement('p');
+    p.textContent = "You: " + input.value;
+    chat.appendChild(p);
+    input.value = '';
+}
+</script>
+</body>
+</html>
